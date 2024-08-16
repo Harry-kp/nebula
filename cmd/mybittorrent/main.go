@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"strconv"
 	// bencode "github.com/jackpal/bencode-go" // Available if you need it!
@@ -134,7 +133,7 @@ func main() {
 		fmt.Println(string(jsonOutput))
 	} else if command == "info" {
 		torrentFile := os.Args[2]
-		data, err := ioutil.ReadFile(torrentFile)
+		data, err := os.ReadFile(torrentFile)
 		if err != nil {
 			fmt.Println(err)
 			return
