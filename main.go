@@ -19,5 +19,5 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(tf)
+	fmt.Println(tf.Announce)
 }

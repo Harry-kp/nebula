@@ -72,6 +72,9 @@ func (bto *bencodeTorrent) toTorrentFile() (TorrentFile, error) {
 	if err != nil {
 		return tf, err
 	}
+	if bto.Announce == "" {
+		return tf, fmt.Errorf("Not able to find the Tracker URL")
+	}
 	tf.InfoHash = hash
 	tf.Announce = bto.Announce
 	tf.PieceLength = bto.Info.PieceLength
