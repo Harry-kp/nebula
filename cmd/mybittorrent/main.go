@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"strconv"
 	// bencode "github.com/jackpal/bencode-go" // Available if you need it!
@@ -131,6 +132,32 @@ func main() {
 
 		jsonOutput, _ := json.Marshal(decoded)
 		fmt.Println(string(jsonOutput))
+	} else if command == "info" {
+		torrentFile := os.Args[2]
+		data, err := ioutil.ReadFile(torrentFile)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		metaData, _, err := decodeBencode(string(data), 0)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		var (
+			tracker string
+			length  int
+		)
+		if metaDataMap, ok := metaData.(map[string]interface{}); ok {
+			// Access elements of the nested map
+			tracker = metaDataMap["announce"].(string)
+			if infoMap, ok := metaDataMap["info"].(map[string]interface{}); ok {
+				length = infoMap["length"].(int)
+			}
+		}
+
+		fmt.Printf("Tracker: %s\n", tracker)
+		fmt.Println("Length:", length)
 	} else {
 		fmt.Println("Unknown command: " + command)
 		os.Exit(1)
