@@ -6,8 +6,8 @@
 //
 // DON'T EDIT THIS!
 
-module github.com/codecrafters-io/bittorrent-starter-go
+module github.com/Harry-kp/bit-bandit
 
 go 1.22
 
-require github.com/jackpal/bencode-go v1.0.0 // indirect
+require github.com/jackpal/bencode-go v1.0.0
