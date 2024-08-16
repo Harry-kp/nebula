@@ -2,8 +2,11 @@ package main
 
 import (
 	"fmt"
+	"net"
 	"os"
+	"time"
 
+	"github.com/Harry-kp/bit-bandit/handshake"
 	"github.com/Harry-kp/bit-bandit/torrentfile"
 )
 
@@ -19,5 +22,17 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(tf.Announce)
+	peerID := [20]byte{}
+	port := uint16(1121)
+	peerList, err := tf.FetchPeers(peerID, port)
+
+	// Send and Recieve Handshake to peer
+	conn, err := net.DialTimeout("tcp", peerList[0].String(), 3*time.Second)
+	// Send the handshake to connection
+	conn.Write(handshake.New(peerID, tf.InfoHash).Serialize())
+	res, err := handshake.Read(conn)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(res)
 }
