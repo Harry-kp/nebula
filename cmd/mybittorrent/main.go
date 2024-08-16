@@ -23,6 +23,8 @@ func decodeBencode(bencodedString string, start int) (interface{}, int, error) {
 		return decodeInt(bencodedString, start)
 	} else if bencodedString[start] >= '0' && bencodedString[start] <= '9' {
 		return decodeString(bencodedString, start)
+	} else if bencodedString[start] == 'd' {
+		return decodeDict(bencodedString, start)
 	} else {
 		return "", start, fmt.Errorf("Invalid Bencoded string")
 	}
@@ -46,6 +48,29 @@ func decodeList(bencodedString string, start int) (interface{}, int, error) {
 	return result, start + 1, nil
 }
 
+func decodeDict(bencodedString string, start int) (interface{}, int, error) {
+	start++
+	result := make(map[string]interface{})
+
+	for start < len(bencodedString) && bencodedString[start] != 'e' {
+		var key interface{}
+		var value interface{}
+		var err error
+
+		key, start, err = decodeBencode(bencodedString, start)
+		if err != nil {
+			return "", start, err
+		}
+
+		value, start, err = decodeBencode(bencodedString, start)
+		if err != nil {
+			return "", start, err
+		}
+
+		result[key.(string)] = value
+	}
+	return result, start + 1, nil
+}
 func decodeInt(bencodedString string, start int) (interface{}, int, error) {
 	start++
 	end := start
