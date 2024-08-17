@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/Harry-kp/bit-bandit/peers"
+	"github.com/Harry-kp/nebula/peers"
 	"github.com/jackpal/bencode-go"
 )
 

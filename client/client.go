@@ -6,10 +6,10 @@ import (
 	"net"
 	"time"
 
-	"github.com/Harry-kp/bit-bandit/bitfield"
-	"github.com/Harry-kp/bit-bandit/handshake"
-	"github.com/Harry-kp/bit-bandit/message"
-	"github.com/Harry-kp/bit-bandit/peers"
+	"github.com/Harry-kp/nebula/bitfield"
+	"github.com/Harry-kp/nebula/handshake"
+	"github.com/Harry-kp/nebula/message"
+	"github.com/Harry-kp/nebula/peers"
 )
 
 type Client struct {

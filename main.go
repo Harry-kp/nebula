@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/Harry-kp/bit-bandit/torrentfile"
+	"github.com/Harry-kp/nebula/torrentfile"
 )
 
 func main() {

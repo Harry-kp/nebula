@@ -8,9 +8,9 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/Harry-kp/bit-bandit/client"
-	"github.com/Harry-kp/bit-bandit/message"
-	"github.com/Harry-kp/bit-bandit/peers"
+	"github.com/Harry-kp/nebula/client"
+	"github.com/Harry-kp/nebula/message"
+	"github.com/Harry-kp/nebula/peers"
 )
 
 // MaxBlockSize is the largest number of bytes a request can ask for

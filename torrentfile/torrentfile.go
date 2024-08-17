@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Harry-kp/bit-bandit/p2p"
+	"github.com/Harry-kp/nebula/p2p"
 	"github.com/jackpal/bencode-go"
 )
 
