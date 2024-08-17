@@ -6,7 +6,7 @@
 //
 // DON'T EDIT THIS!
 
-module github.com/Harry-kp/bit-bandit
+module github.com/Harry-kp/nebula
 
 go 1.22
 
