@@ -35,11 +35,20 @@ Nebula is a command-line torrent client written in Go. It's designed to be a lig
 
 2. **Installation:**
 
+   **Option 1: Download Pre-built Binaries**
+
+   - Download the appropriate binary for your operating system from the [Releases](https://github.com/Harry-kp/nebula/releases) page.
+   - Make the binary executable (e.g., `chmod +x nebula-linux`).
+   - Move the binary to a directory in your PATH (e.g., `/usr/local/bin`).
+
+   **Option 2: Build from Source**
+
    ```bash
    go get github.com/Harry-kp/nebula
    ```
 
 3. **Usage:**
+
    ```bash
    nebula <path/to/torrent.torrent> <path/to/output>
    ```
