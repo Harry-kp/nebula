@@ -1,0 +1,73 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Dependency directories (remove the comment below to include it)
+# vendor/
+
+# Go build output
+build
+dist
+
+# IDE settings
+.vscode/
+.idea/
+
+# Executables
+*.app
+
+# Output of the go tool, and external tools such as the Docker build
+*.o
+*.a
+
+# Coverage testing temp files
+cover.out
+
+# Go package archives
+*.tar.gz
+
+# Internal package directories
+_
+internal
+_test
+_obj
+
+# Temporary (auto-generated) files
+*.swp
+*.tmp
+*~
+
+# Files and directories created by pkg-config
+*.pc
+
+# dotenv environment variable files
+.env
+
+# macOS folder attributes
+.DS_Store
+
+# Temporary files created by some editors
+.#*
+
+# Log files
+*.log
+
+# Dependency lock files
+go.mod
+go.sum
+
+# Generated files
+generated
+
+# Optional, add more specific ignores as needed
+# Example:
+# /api/generated/*
