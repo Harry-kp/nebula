@@ -71,3 +71,5 @@ generated
 # Optional, add more specific ignores as needed
 # Example:
 # /api/generated/*
+
+dist/
