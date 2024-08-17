@@ -33,8 +33,22 @@ func (tf *TorrentFile) createTrackerURL(peer_id [20]byte, port uint16) (string, 
 	params.Add("left", strconv.Itoa(tf.Length))
 	return fmt.Sprintf("%s?%s", baseURL, params.Encode()), nil
 }
+func (tf *TorrentFile) fetchPeers(peer_id [20]byte, port uint16) ([]peers.Peer, error) {
+	if len(tf.Announce) < 7 {
+		return nil, fmt.Errorf("Invalid announce URL")
+	}
 
-func (tf *TorrentFile) FetchPeers(peer_id [20]byte, port uint16) ([]peers.Peer, error) {
+	switch tf.Announce[:7] {
+	case "http://":
+		return tf.fetchPeersHttp(peer_id, port)
+	case "udp://":
+		return nil, fmt.Errorf("UDP tracker not supported yet.We are working on it")
+	default:
+		return nil, fmt.Errorf("Unsupported protocol")
+	}
+}
+
+func (tf *TorrentFile) fetchPeersHttp(peer_id [20]byte, port uint16) ([]peers.Peer, error) {
 	trackerURL, err := tf.createTrackerURL(peer_id, port)
 	if err != nil {
 		return nil, err

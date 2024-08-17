@@ -27,14 +27,14 @@ type Message struct {
 }
 
 // First We Ask the peer to get if they have the piece
-func FormatHave(index int) (*Message, error) {
+func FormatHave(index int) *Message {
 	m := Message{
 		ID: MsgHave,
 	}
 	buffer := make([]byte, 4)
 	binary.BigEndian.PutUint32(buffer, uint32(index))
 	m.Payload = buffer
-	return &m, nil
+	return &m
 }
 
 // Then we parse the message to see if the peer has the piece
@@ -48,6 +48,29 @@ func ParseHave(msg *Message) (int, error) {
 	}
 	index := int(binary.BigEndian.Uint32(msg.Payload))
 	return index, nil
+}
+
+func ParsePiece(index int, buf []byte, msg *Message) (int, error) {
+	if msg.ID != MsgPiece {
+		return 0, fmt.Errorf("Expected PIECE (ID %d), got ID %d", MsgPiece, msg.ID)
+	}
+
+	if len(msg.Payload) < 8 {
+		return 0, fmt.Errorf("Expected payload length at least 8, got %d", len(msg.Payload))
+	}
+
+	pieceIndex := int(binary.BigEndian.Uint32(msg.Payload[0:4]))
+	begin := int(binary.BigEndian.Uint32(msg.Payload[4:8]))
+
+	if pieceIndex != index {
+		return 0, fmt.Errorf("Expected piece index %d, got %d", index, pieceIndex)
+	}
+	data := msg.Payload[8:]
+	if begin+len(data) > len(buf) {
+		return 0, fmt.Errorf("Data too long [%d] for offset %d with length %d", len(data), begin, len(buf))
+	}
+	copy(buf[begin:], msg.Payload[8:])
+	return len(data), nil
 }
 
 // FormatRequest creates a REQUEST message for the given piece if the peer has it
