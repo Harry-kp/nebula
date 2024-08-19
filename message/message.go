@@ -92,7 +92,7 @@ func Read(r io.Reader) (*Message, error) {
 	}
 	length := binary.BigEndian.Uint32(lengthBuf)
 
-	// keet the connection alive
+	// keep the connection alive
 	if length == 0 {
 		return nil, nil
 	}
