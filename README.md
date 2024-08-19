@@ -1,4 +1,8 @@
 # Nebula: A Go-Based Torrent Client 🚀
+<div>
+  <img src="https://github.com/user-attachments/assets/dc3956c7-3b16-46a8-91f6-9bdc4c047d4c" alt="Icon" style="width: 200px; height: 150px;">
+</div>
+
 
 Nebula is a command-line torrent client written in Go. It's designed to be a lightweight and efficient tool for downloading torrent files.
 
