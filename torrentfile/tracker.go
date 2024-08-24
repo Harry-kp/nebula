@@ -44,7 +44,7 @@ func (tf *TorrentFile) fetchPeers(peer_id [20]byte, port uint16) ([]peers.Peer, 
 	case "udp://":
 		return nil, fmt.Errorf("UDP tracker not supported yet.We are working on it")
 	default:
-		return nil, fmt.Errorf("Unsupported protocol")
+		return nil, fmt.Errorf("Currently, we only support HTTP trackers protocol. Please use torrent with http:// announce URL. We are working on it")
 	}
 }
 

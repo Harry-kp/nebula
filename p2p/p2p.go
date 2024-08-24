@@ -4,13 +4,15 @@ import (
 	"bytes"
 	"crypto/sha1"
 	"fmt"
-	"log"
 	"runtime"
 	"time"
 
 	"github.com/Harry-kp/nebula/client"
+	"github.com/Harry-kp/nebula/logger"
 	"github.com/Harry-kp/nebula/message"
 	"github.com/Harry-kp/nebula/peers"
+	"github.com/k0kubun/go-ansi"
+	"github.com/schollz/progressbar/v3"
 )
 
 // MaxBlockSize is the largest number of bytes a request can ask for
@@ -120,11 +122,11 @@ func checkIntegrity(pw *pieceWork, data []byte) bool {
 func (t *Torrent) downloadTorrentWorker(peer peers.Peer, workQueue chan *pieceWork, results chan *pieceResult) {
 	c, err := client.New(peer, t.InfoHash, t.PeerID)
 	if err != nil {
-		fmt.Printf("Could not able to handshake with %s. Disconnecting...\n", peer.IP)
+		logger.Printf("Could not able to handshake with %s. Disconnecting...\n", peer.IP)
 		return
 	}
 	defer c.Conn.Close()
-	log.Printf("Handshake with %s successful", peer.IP)
+	logger.Printf("Handshake with %s successful", peer.IP)
 
 	c.SendUnchoke()
 	c.SendInterested()
@@ -137,13 +139,13 @@ func (t *Torrent) downloadTorrentWorker(peer peers.Peer, workQueue chan *pieceWo
 
 		buf, err := attemptDownloadPiece(c, pw)
 		if err != nil {
-			log.Println("Error downloading piece", pw.index, "from", peer.IP, ":", err)
+			logger.Println("Error downloading piece", pw.index, "from", peer.IP, ":", err)
 			workQueue <- pw
 			return
 		}
 
 		if !checkIntegrity(pw, buf) {
-			log.Println("Piece failed integrity check", pw.index, "from", peer.IP)
+			logger.Println("Piece failed integrity check", pw.index, "from", peer.IP)
 			workQueue <- pw
 			continue
 		}
@@ -167,7 +169,7 @@ func (t *Torrent) calculatePieceSize(index int) int {
 }
 
 func (t *Torrent) Download() []byte {
-	log.Println("Starting download for", t.Name)
+	logger.Println("Starting download for", t.Name)
 	workQueue := make(chan *pieceWork, len(t.PieceHashes))
 	results := make(chan *pieceResult)
 	for index, hash := range t.PieceHashes {
@@ -180,16 +182,33 @@ func (t *Torrent) Download() []byte {
 	}
 
 	buf := make([]byte, t.Length)
+	bar := progressbar.NewOptions(t.Length,
+		progressbar.OptionEnableColorCodes(true),
+		progressbar.OptionSetWriter(ansi.NewAnsiStdout()),
+		progressbar.OptionShowBytes(true),
+		progressbar.OptionSetElapsedTime(false),
+		progressbar.OptionSetRenderBlankState(true),
+		progressbar.OptionSetDescription("["+t.Name+"]"),
+		progressbar.OptionShowElapsedTimeOnFinish(),
+		progressbar.OptionSetTheme(progressbar.Theme{
+			Saucer:        "[green]=[reset]",
+			SaucerHead:    "[green]>[reset]",
+			SaucerPadding: " ",
+			BarStart:      "[",
+			BarEnd:        "]",
+		}))
 	donePieces := 0
 	for donePieces < len(t.PieceHashes) {
 		res := <-results
 		begin, end := t.calculateBoundsForPiece(res.index)
 		copy(buf[begin:end], res.buf)
 		donePieces++
+		bar.Add(end - begin)
 		percent := float64(donePieces) / float64(len(t.PieceHashes)) * 100
 		numWorkers := runtime.NumGoroutine() - 1 // subtract 1 for main thread
-		log.Printf("(%0.2f%%) Downloaded piece #%d from %d peers\n", percent, res.index, numWorkers)
+		logger.Printf("(%0.2f%%) Downloaded piece #%d from %d peers\n", percent, res.index, numWorkers)
 	}
 	close(workQueue)
+	fmt.Println()
 	return buf
 }
