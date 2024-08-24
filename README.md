@@ -1,15 +1,15 @@
 # Nebula: A Go-Based Torrent Client 🚀
+
 <div>
   <img src="https://github.com/user-attachments/assets/dc3956c7-3b16-46a8-91f6-9bdc4c047d4c" alt="Icon" style="width: 200px; height: 150px;">
 </div>
-
 
 Nebula is a command-line torrent client written in Go. It's designed to be a lightweight and efficient tool for downloading torrent files.
 
 ### Credits where it's due:
 
-- I got the insipiration to build this project from [here](https://blog.jse.li/posts/torrent/) and this source code is almost similar to [this](https://github.com/veggiedefender/torrent-client).
-- I just write this in my repostory to learn more about the BitTorrent protocol and build a functional torrent client from scratch. It helped me to understand the working of torrent clients and how they communicate with trackers and peers to download files.
+- I got the inspiration to build this project from [here](https://blog.jse.li/posts/torrent/) and this source code is almost similar to [this](https://github.com/veggiedefender/torrent-client).
+- I just wrote this in my repository to learn more about the BitTorrent protocol and build a functional torrent client from scratch. It helped me to understand the working of torrent clients and how they communicate with trackers and peers to download files.
 - I will try to add more features to this project and make it more efficient and user-friendly.
 
 ### Current Features:
@@ -54,14 +54,22 @@ Nebula is a command-line torrent client written in Go. It's designed to be a lig
 3. **Usage:**
 
    ```bash
-   nebula <path/to/torrent.torrent> <path/to/output>
+   nebula -input <path/to/torrent.torrent> -output <path/to/output> [-log]
    ```
+
+   **Flags:**
+
+   - `-input`: Path to the input torrent file (required).
+   - `-output`: Path to the output file or directory (default: current directory).
+   - `-log`: Enable logging (optional).
 
 **Example:**
 
 ```bash
-nebula my_favorite_movie.torrent .
+nebula -input my_favorite_movie.torrent -output .
 ```
+
+https://github.com/user-attachments/assets/2fe05664-7e27-4ccf-b0bc-be45a54a3078
 
 ### How it Works:
 
